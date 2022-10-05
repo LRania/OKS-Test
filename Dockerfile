@@ -1,21 +1,15 @@
-# Use an official Python runtime as a parent image
-FROM python:2.7-slim
+FROM python:3.7-alpine3.12
 
+RUN apk add --no-cache py3-pip \
+    && pip3 install --upgrade pip
 
-# Set the working directory to /app
 WORKDIR /app
-
-# Copy the current directory contents into the container at /app
 COPY . /app
 
-# Install any needed packages specified in requirements.txt
-RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
-# Make port 80 available to the world outside this container
-EXPOSE 80
+RUN pip3 --no-cache-dir install -r requirements.txt
 
-# Define environment variable
-ENV NAME World
+EXPOSE 5000
 
-# Run app.py when the container launches
-CMD ["python", "app.py"]
+ENTRYPOINT ["python3"]
+CMD ["app.py"]
